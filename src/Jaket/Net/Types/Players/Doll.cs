@@ -37,7 +37,7 @@ public class Doll : MonoBehaviour
     public Vector3 HoldPosition => Hooking ? Hook.position : HookRoot.position;
 
     /// <summary> Materials of the wings, coin and skateboard. </summary>
-    public Material WingMat, CoinMat, SkateMat;
+    public Material WingMat, CoinMat, SkateMat, BodyMat;
     /// <summary> Trail of the wings. </summary>
     public TrailRenderer WingTrail;
     /// <summary> Winch of the hook. </summary>
@@ -73,6 +73,7 @@ public class Doll : MonoBehaviour
         Skateboard = V3.Find("Skateboard");
         Suits = V3.Find("Suits");
 
+        BodyMat = V3.Find("V3").GetComponent<Renderer>().materials[0];
         WingMat = V3.Find("V3").GetComponent<Renderer>().materials[1];
         CoinMat = Coin.GetComponent<Renderer>().material;
         SkateMat = Skateboard.GetComponent<Renderer>().material;
@@ -142,6 +143,13 @@ public class Doll : MonoBehaviour
     public void ApplyTeam(Team team)
     {
         WingMat.mainTexture = SkateMat.mainTexture = DollAssets.WingTextures[(int)team];
+        BodyMat.mainTexture = team switch
+        {
+            Team.Blue => DollAssets.BodyTextures[1], 
+            Team.Red => DollAssets.BodyTextures[2], 
+            _ => DollAssets.BodyTextures[0]
+        };
+        
         CoinMat.color = team.Color();
         if (WingTrail != null) WingTrail.startColor = team.Color() with { a = .5f };
 
