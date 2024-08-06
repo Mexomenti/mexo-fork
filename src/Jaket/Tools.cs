@@ -67,17 +67,18 @@ public class Tools
     };
 
     public static bool ValidateDifficulty(string val) {
-        if (GetDifficultyFromName(val) != 42) return true;
-        
-        return val switch {
+        bool ret = val switch {
             "0" => true,
             "1" => true,
             "2" => true,
             "3" => true,
             "4" => true,
-            "5" => true,
+            // "5" => true,
             _   => false
         };
+
+        if (!ret && GetDifficultyFromName(val) != 42) ret = true;
+        return ret;
     }
 
     public static byte GetDifficultyFromName(string name)
@@ -88,10 +89,10 @@ public class Tools
         if (name.ToLower().Contains("violent")) return 3;
         if (name.ToLower().Contains("brutal")) return 4;
 
-        if (name.ToLower().Contains("ukmd") || name.ToLower().Contains("ultrakill"))
-        {
-            return 5;
-        }
+        // if (name.ToLower().Contains("ukmd") || name.ToLower().Contains("ultrakill"))
+        // {
+        //     return 5;
+        // }
 
         return 42;
     }

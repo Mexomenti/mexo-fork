@@ -190,20 +190,20 @@ public class Commands
             else if (!Tools.ValidateDifficulty(args[0]))
             {
                 Msg("\\[Difficulty\\] Must be a number from 0 to 4 or a valid difficulty name");
-                Msg("\\[Difficulty\\] (on [yellow]patched[] copies of ultrakill, 5 and ukmd are allowed)");
+                // Msg("\\[Difficulty\\] (on [yellow]patched[] copies of ultrakill, 5 and ukmd are allowed)");
             }
             else if (uint.TryParse(args[0], out uint difficulty))
             {
-                if (Tools.IsDifficultyUKMD(args[0]))
-                {
-                    // try to set difficulty to ukmd, set an error message on failure
-                    Tools.SetDifficulty((byte)difficulty);
-                    if (Tools.GetDifficulty() != 5) {
-                        Msg("\\[Difficulty\\] Failed to set difficulty to UKMD, your copy of ultrakill is not properly patched");
-                        Log.Warning("[Difficulty] Failed to set difficulty to UKMD, your copy of ultrakill is not properly patched");
-                        return;
-                    }
-                }
+                // if (Tools.IsDifficultyUKMD(args[0]))
+                // {
+                //     // try to set difficulty to ukmd, set an error message on failure
+                //     Tools.SetDifficulty((byte)difficulty);
+                //     if (Tools.GetDifficulty() != 5) {
+                //         Msg("\\[Difficulty\\] Failed to set difficulty to UKMD, your copy of ultrakill is not properly patched");
+                //         Log.Warning("[Difficulty] Failed to set difficulty to UKMD, your copy of ultrakill is not properly patched");
+                //         return;
+                //     }
+                // }
 
                 Tools.SetDifficulty((byte)difficulty);
                 Msg($"\\[Difficulty\\] Set difficulty to {Tools.GetDifficultyName((byte)difficulty)}");
@@ -212,16 +212,16 @@ public class Commands
             {
                 byte difficultyVal = Tools.GetDifficultyFromName(args[0]);
 
-                if (Tools.IsDifficultyUKMD(args[0]))
-                {
-                    // try to set difficulty to ukmd, set an error message on failure
-                    Tools.SetDifficulty(difficultyVal);
-                    if (Tools.GetDifficulty() != 5) {
-                        Msg("\\[Difficulty\\] Failed to set difficulty to UKMD, your copy of ultrakill is not properly patched");
-                        Log.Warning("[Difficulty] Failed to set difficulty to UKMD, your copy of ultrakill is not properly patched");
-                        return;
-                    }
-                }
+                // if (Tools.IsDifficultyUKMD(args[0]))
+                // {
+                //     // try to set difficulty to ukmd, set an error message on failure
+                //     Tools.SetDifficulty(difficultyVal);
+                //     if (Tools.GetDifficulty() != 5) {
+                //         Msg("\\[Difficulty\\] Failed to set difficulty to UKMD, your copy of ultrakill is not properly patched");
+                //         Log.Warning("[Difficulty] Failed to set difficulty to UKMD, your copy of ultrakill is not properly patched");
+                //         return;
+                //     }
+                // }
 
                 Tools.SetDifficulty(difficultyVal);
                 Msg($"\\[Difficulty\\] Set difficulty to {Tools.GetDifficultyName(difficultyVal)}");
