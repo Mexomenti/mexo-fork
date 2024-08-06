@@ -2,7 +2,6 @@
 .vscode/*
 .vs/
 
-bin/*
 obj/*
 lib/*
 build/*
