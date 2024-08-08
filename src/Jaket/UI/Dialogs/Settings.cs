@@ -18,8 +18,8 @@ public class Settings : CanvasSingleton<Settings>
 
     /// <summary> Id of the currently selected language. </summary>
     public static int Language;
-    /// <summary> 0 - default (depending on whether the player is in the lobby or not), 1 - always green, 2 - always blue/red. </summary>
-    public static int FeedColor, KnuckleColor;
+    /// <summary> 0 - default (depending on whether the player is in the lobby or not), 1 - always green, 2 - always blue, 2 - always red </summary>
+    public static int FeedColor, KnuckleColor, HandColor;
     /// <summary> Whether freeze frames are disabled. </summary>
     public static bool DisableFreezeFrames;
 
@@ -63,7 +63,7 @@ public class Settings : CanvasSingleton<Settings>
         get => pm.GetInt("jaket.tts.volume", 60);
         set
         {
-            DollAssets.Mixer?.SetFloat("Volume", value / 2f - 30f); // the value should be between -30 and 20 decibels
+            ModAssets.Mixer?.SetFloat("Volume", value / 2f - 30f); // the value should be between -30 and 20 decibels
             pm.SetInt("jaket.tts.volume", value);
         }
     }
@@ -82,7 +82,7 @@ public class Settings : CanvasSingleton<Settings>
     /// <summary> Components of a key button and the path to the keybind. </summary>
     private string path; Text text; Image background;
     /// <summary> General settings buttons. </summary>
-    private Button lang, feed, knkl;
+    private Button lang, feed, knkl, hand;
 
     /// <summary> Loads and applies all settings. </summary>
     public static void Load()
@@ -90,6 +90,7 @@ public class Settings : CanvasSingleton<Settings>
         Language = Bundle.LoadedLocale;
         FeedColor = pm.GetInt("jaket.feed-color");
         KnuckleColor = pm.GetInt("jaket.knkl-color");
+        HandColor = pm.GetInt("jaket.hand-color");
         DisableFreezeFrames = pm.GetBool("jaket.disable-freeze", true);
 
         Chat = GetKey("chat", KeyCode.Return);
@@ -105,13 +106,13 @@ public class Settings : CanvasSingleton<Settings>
         Spray = GetKey("spray", KeyCode.T);
         SelfDestruction = GetKey("self-destruction", KeyCode.K);
 
-        DollAssets.Mixer?.SetFloat("Volume", TTSVolume / 2f - 30f);
+        ModAssets.Mixer?.SetFloat("Volume", TTSVolume / 2f - 30f);
     }
 
     private void Start()
     {
         UIB.Shadow(transform);
-        UIB.Table("General", "#settings.general", transform, Tlw(16f + 328f / 2f, 328f), table =>
+        UIB.Table("General", "#settings.general", transform, Tlw(16f + 376f / 2f, 376f), table =>
         {
             UIB.Button("#settings.reset", table, Btn(68f), clicked: ResetGeneral);
 
@@ -124,25 +125,32 @@ public class Settings : CanvasSingleton<Settings>
             UIB.Text("FEEDBACKER:", table, Btn(164f), align: TextAnchor.MiddleLeft);
             feed = UIB.Button("", table, Stn(164f, 160f), clicked: () =>
             {
-                pm.SetInt("jaket.feed-color", FeedColor = ++FeedColor % 3);
+                pm.SetInt("jaket.feed-color", FeedColor = ++FeedColor % 4);
                 Rebuild();
             });
 
             UIB.Text("KNUCKLE:", table, Btn(212f), align: TextAnchor.MiddleLeft);
             knkl = UIB.Button("", table, Stn(212f, 160f), clicked: () =>
             {
-                pm.SetInt("jaket.knkl-color", KnuckleColor = ++KnuckleColor % 3);
+                pm.SetInt("jaket.knkl-color", KnuckleColor = ++KnuckleColor % 4);
                 Rebuild();
             });
 
-            UIB.Toggle("#settings.freeze", table, Tgl(256f), 20, _ =>
+            UIB.Text("OTHER HAND:", table, Btn(260f), align: TextAnchor.MiddleLeft);
+            hand = UIB.Button("", table, Stn(260f, 160f), clicked: () =>
+            {
+                pm.SetInt("jaket.hand-color", HandColor = ++HandColor % 4);
+                Rebuild();
+            });
+
+            UIB.Toggle("#settings.freeze", table, Tgl(304f), 20, _ =>
             {
                 pm.SetBool("jaket.disable-freeze", DisableFreezeFrames = _);
             }).isOn = DisableFreezeFrames;
 
-            UIB.Button("#settings.sprays", table, Btn(300f), clicked: SpraySettings.Instance.Toggle);
+            UIB.Button("#settings.sprays", table, Btn(348f), clicked: SpraySettings.Instance.Toggle);
         });
-        UIB.Table("Controls", "#settings.controls", transform, Tlw(360f + 576f / 2f, 576f), table =>
+        UIB.Table("Controls", "#settings.controls", transform, Tlw(408f + 576f / 2f, 576f), table =>
         {
             UIB.Button("#settings.reset", table, Btn(68f), clicked: ResetControls);
 
@@ -196,13 +204,15 @@ public class Settings : CanvasSingleton<Settings>
         {
             0 => "settings.default",
             1 => "settings.green",
-            2 => "settings.vanilla",
+            2 => "settings.red",
+            3 => "settings.blue",
             _ => "lobby-tab.default"
         });
 
         lang.GetComponentInChildren<Text>().text = Bundle.Locales[Language];
         feed.GetComponentInChildren<Text>().text = Mode(FeedColor);
         knkl.GetComponentInChildren<Text>().text = Mode(KnuckleColor);
+        hand.GetComponentInChildren<Text>().text = Mode(HandColor);
 
         // update the color of the feedbacker and knuckleblaster
         Events.OnWeaponChanged.Fire();

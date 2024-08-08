@@ -90,7 +90,7 @@ public class PlayerList : CanvasSingleton<PlayerList>
                     UIB.ProfileButton(member, table, Stn(y += 48f, -48f));
                     if (member.Id.AccountId != Tools.AccId && LobbyController.IsOwner)
                     {
-                        UIB.IconButton("K", table, Icon(140f, y), new(1f, .8f, 0f), clicked: () => Administration.Kick(member.Id.AccountId));
+                        UIB.IconButton("K", table, Icon(140f, y), yellow, clicked: () => Administration.Kick(member.Id.AccountId));
                         UIB.IconButton("B", table, Icon(188f, y), orange, clicked: () => Administration.Ban(member.Id.AccountId));
                     }
                 }

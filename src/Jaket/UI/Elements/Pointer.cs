@@ -40,12 +40,12 @@ public class Pointer : MonoBehaviour
 
     private void Start()
     {
-        if (player != null) line = UIB.Component<LineRenderer>(gameObject, line =>
+        if (player != null) line = UIB.Component<LineRenderer>(gameObject, (System.Action<LineRenderer>)(line =>
         {
-            line.material.shader = DollAssets.Shader;
+            line.material.shader = ModAssets.Shader;
             line.startColor = line.endColor = color;
             line.widthMultiplier = 0f;
-        });
+        }));
 
         UIB.WorldCanvas("First Circle", transform, new(), build: canvas =>
         {

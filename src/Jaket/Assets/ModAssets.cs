@@ -1,130 +1,131 @@
 namespace Jaket.Assets;
 
-using HarmonyLib;
-using System;
 using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
-
-using Object = UnityEngine.Object;
+using UnityEngine.Events;
 
 using Jaket.Content;
 using Jaket.Net;
 using Jaket.Net.Types;
 using Jaket.UI.Dialogs;
+using Train;
 
-/// <summary> Class that works with the assets of the mod. </summary>
+/// <summary> Class that works with the assets bundle of the mod. </summary>
 public class ModAssets
 {
+    /// <summary> Bundle containing assets for player doll. </summary>
+    public static AssetBundle Bundle;
+
     /// <summary> Player doll and its preview prefabs. </summary>
     public static GameObject Doll, Preview;
+
     /// <summary> Jaket plushies. </summary>
     public static GameObject V2, V3;
 
     /// <summary> Player doll icon. </summary>
     public static Sprite Icon;
-    /// <summary> Bestiary description. </summary>
-    public static string Desc;
-    /// <summary> Shader used by the game for materials. </summary>
-    public static Shader Shader;
+
     /// <summary> Mixer processing Sam's voice. Used to change volume. </summary>
     public static AudioMixer Mixer;
-
-    /// <summary> Coin texture used by team coins. </summary>
-    public static Texture CoinTexture;
-    /// <summary> Wing textures used to differentiate teams. </summary>
-    public static Texture[] WingTextures;
-    /// <summary> Hand textures used by local player. </summary>
-    public static Texture[] HandTextures;
-
-    /// <summary> Image of the fallen Virage. </summary>
-    public static Sprite ChanFallen;
-    /// <summary> Different poses of Virage. </summary>
-    public static Sprite[] ChanPoses;
-    /// <summary> Icons for the emote selection wheel. </summary>
-    public static Sprite[] EmoteIcons, EmoteGlows;
 
     /// <summary> Font used by the mod. Differs from the original in support of Cyrillic alphabet. </summary>
     public static Font Font;
     public static TMP_FontAsset FontTMP;
 
-    /// <summary> Loads the assets bundle and other necessary stuff. </summary>
+    /// <summary> Shader used by the game for materials. </summary>
+    public static Shader Shader;
+
+    /// <summary> Wing textures used to differentiate teams. </summary>
+    public static Texture[] WingTextures;
+
+    /// <summary> Hand textures used by local player. </summary>
+    public static Texture[] HandTextures;
+    // <summary> Body textures used by local player. </summary>
+    public static Texture[] BodyTextures;
+
+    /// <summary> Coin texture used by team coins. </summary>
+    public static Texture CoinTexture;
+
+    /// <summary> Icons for the emoji selection wheel. </summary>
+    public static Sprite[] EmojiIcons, EmojiGlows;
+
+    /// <summary> Loads assets bundle and other necessary stuff. </summary>
     public static void Load()
     {
-        var bundle = AssetBundle.LoadFromFile(Path.Combine(Plugin.Instance.Location, "jaket-assets.bundle"));
+        Bundle = LoadBundle();
 
-        void Load<T>(string name, Action<T> cons) where T : Object
+        // cache the shader and the wing textures for future use
+        Shader = AssetHelper.LoadPrefab("cb3828ada2cbefe479fed3b51739edf6").GetComponent<global::V2>().smr.material.shader;
+        WingTextures = new Texture[Tools.EnumMax<Team>() + 1];
+        HandTextures = new Texture[6];
+        BodyTextures = new Texture[3];
+
+        // loading wing textures from the bundle
+        for (int i = 0; i < WingTextures.Length; i++)
         {
-            var task = bundle.LoadAssetAsync<T>(name);
-            task.completed += _ => cons(task.asset as T);
-        };
-
-        // general
-        Shader = Enemies.Prefabs[EntityType.V2_RedArm - EntityType.EnemyOffset].GetComponent<global::V2>().smr.material.shader;
-
-        Load<Sprite>("V3-icon", s => Icon = s);
-        Load<TextAsset>("V3-bestiary-entry", f => Desc = f.text);
-        Load<AudioMixer>("sam-audio", m =>
-        {
-            Events.Post(() => Networking.LocalPlayer.Voice.outputAudioMixerGroup = (Mixer = m).FindMatchingGroups("Master")[0]);
-        });
-
-        // textures
-        WingTextures = new Texture[5];
-        HandTextures = new Texture[4];
-
-        Load<Texture>("coin", t => CoinTexture = t);
-
-        for (int i = 0; i < 5; i++)
-        {
-            int j = i;
-            Load<Texture>("V3-wings-" + (Team)i, t => WingTextures[j] = t);
+            var index = i; // C# sucks
+            LoadAsync<Texture>("V3-wings-" + ((Team)i).ToString(), tex => WingTextures[index] = tex);
         }
 
-        Load<Texture>("V3-hand", t => HandTextures[1] = t);
-        Load<Texture>("V3-blast", t => HandTextures[3] = t);
+        LoadAsync<Texture>("v3-body", tex => BodyTextures[0] = tex);
+        LoadAsync<Texture>("v3-body-blue", tex => BodyTextures[1] = tex);
+        LoadAsync<Texture>("v3-body-red", tex => BodyTextures[2] = tex);
+
+        LoadAsync<Texture>("V3-hand", tex => HandTextures[1] = tex);
+        LoadAsync<Texture>("V3-blast", tex => HandTextures[3] = tex);
+        LoadAsync<Texture>("V3-hand-red", tex => HandTextures[4] = tex);
+        LoadAsync<Texture>("V3-blast-blue", tex => HandTextures[5] = tex);
         HandTextures[0] = FistControl.Instance.blueArm.ToAsset().GetComponentInChildren<SkinnedMeshRenderer>().material.mainTexture;
         HandTextures[2] = FistControl.Instance.redArm.ToAsset().GetComponentInChildren<SkinnedMeshRenderer>().material.mainTexture;
 
-        // sprites
-        ChanPoses = new Sprite[7];
-        EmoteIcons = new Sprite[12];
-        EmoteGlows = new Sprite[12];
+        LoadAsync<Texture>("coin", tex => CoinTexture = tex);
 
-        Load<Sprite>("V3-chan-fallen", s => ChanFallen = s);
-
-        for (int i = 0; i < 7; i++)
-        {
-            int j = i;
-            Load<Sprite>("V3-chan-" + i, s => ChanPoses[j] = s);
-        }
+        // load icons for emoji wheel
+        EmojiIcons = new Sprite[12];
+        EmojiGlows = new Sprite[12];
 
         for (int i = 0; i < 12; i++)
         {
-            var j = i;
-            Load<Sprite>("V3-emote-" + i, s => EmoteIcons[j] = s);
-            Load<Sprite>("V3-emote-" + i + "-glow", s => EmoteGlows[j] = s);
+            var index = i;
+            LoadAsync<Sprite>("V3-emoji-" + i, tex => EmojiIcons[index] = tex);
+            LoadAsync<Sprite>("V3-emoji-" + i + "-glow", tex => EmojiGlows[index] = tex);
         }
 
-        // fonts
-        Font = bundle.LoadAsset<Font>("font.ttf");
+        // create prefabs of the player doll and its preview
+        LoadAsync<GameObject>("Player Doll.prefab", prefab =>
+        {
+            Object.DontDestroyOnLoad(prefab);
+            FixMaterials(prefab);
+
+            Doll = prefab;
+        });
+
+        LoadAsync<GameObject>("Player Doll Preview.prefab", prefab =>
+        {
+            Object.DontDestroyOnLoad(prefab);
+            FixMaterials(prefab);
+
+            Preview = prefab;
+        });
+
+        // I guess async will improve performance a little bit
+        LoadAsync<Sprite>("V3-icon", sprite => Icon = sprite);
+        LoadAsync<AudioMixer>("sam-audio", mix =>
+        {
+            Mixer = mix;
+            Events.Post(() =>
+            {
+                Networking.LocalPlayer.Voice.outputAudioMixerGroup = Mixer.FindMatchingGroups("Master")[0];
+            });
+        });
+
+        // but the font must be loaded immediately, because it is needed to build the interface
+        Font = Bundle.LoadAsset<Font>("font.ttf");
         FontTMP = TMP_FontAsset.CreateFontAsset(Font);
 
-        // dolls & plushies
-        Load<GameObject>("Player Doll.prefab", p =>
-        {
-            Object.DontDestroyOnLoad(Doll = p);
-            FixMaterials(p);
-        });
-
-        Load<GameObject>("Player Doll Preview.prefab", p =>
-        {
-            Object.DontDestroyOnLoad(Preview = p);
-            FixMaterials(p);
-        });
-
-        Load<Texture>("V2-plushie", t =>
+        LoadAsync<Texture>("V2-plushie", t =>
         {
             int i = EntityType.V2 - EntityType.ItemOffset;
             Object.DontDestroyOnLoad(V2 = Items.Prefabs[i] = Object.Instantiate(Items.Prefabs[i]));
@@ -134,7 +135,7 @@ public class ModAssets
             V2.GetComponent<Rigidbody>().isKinematic = true;
         });
 
-        Load<Texture>("V3-plushie", t =>
+        LoadAsync<Texture>("V3-plushie", t =>
         {
             int i = EntityType.V3 - EntityType.ItemOffset;
             Object.DontDestroyOnLoad(V3 = Items.Prefabs[i] = Object.Instantiate(Items.Prefabs[i]));
@@ -145,53 +146,41 @@ public class ModAssets
         });
     }
 
-    /// <summary> Creates a new player doll from the prefab. </summary>
-    public static RemotePlayer CreateDoll()
+    /// <summary> Finds and loads an assets bundle. </summary>
+    public static AssetBundle LoadBundle()
     {
-        var obj = Entities.Mark(Doll);
-        var enemyId = obj.AddComponent<EnemyIdentifier>();
-        var machine = obj.AddComponent<Machine>();
+        string assembly = Plugin.Instance.Location;
+        string directory = Path.GetDirectoryName(assembly);
+        string bundle = Path.Combine(directory, "jaket-assets.bundle");
 
-        enemyId.enemyClass = EnemyClass.Machine;
-        enemyId.enemyType = EnemyType.V2;
-        enemyId.dontCountAsKills = true;
+        return AssetBundle.LoadFromFile(bundle);
+    }
 
-        enemyId.weaknesses = new string[0];
-        enemyId.burners = new();
-        enemyId.flammables = new();
-        enemyId.activateOnDeath = new GameObject[0];
-        machine.destroyOnDeath = new GameObject[0];
-        machine.hurtSounds = new AudioClip[0];
+    /// <summary> Finds and asynchronously loads an asset. </summary>
+    public static void LoadAsync<T>(string name, UnityAction<T> cons) where T : Object
+    {
+        var task = Bundle.LoadAssetAsync<T>(name);
+        task.completed += _ => cons(task.asset as T);
+    }
 
-        // add enemy identifiers to doll parts to make the doll hitable
-        foreach (var rb in obj.transform.GetChild(0).GetComponentsInChildren<Rigidbody>())
+    /// <summary> Changes the colors of materials and their shaders to match the style of the game.. </summary>
+    public static void FixMaterials(GameObject obj)
+    {
+        foreach (var renderer in obj.GetComponentsInChildren<Renderer>(true))
         {
-            rb.gameObject.AddComponent<EnemyIdentifierIdentifier>();
-            rb.tag = MapTag(rb.tag);
+            // component responsible for drawing the trace
+            if (renderer is TrailRenderer) continue;
+
+            // body, rocket & hook materials
+            foreach (var mat in renderer.materials)
+            {
+                mat.color = Color.white;
+                mat.shader = Shader;
+            }
         }
-
-        return obj.AddComponent<RemotePlayer>();
     }
 
-    /// <summary> Returns the hand texture currently in use. Depends on whether the player is in the lobby or not. </summary>
-    public static Texture HandTexture(bool feedbacker = true)
-    {
-        var s = feedbacker ? Settings.FeedColor : Settings.KnuckleColor;
-        return HandTextures[(feedbacker ? 0 : 2) + (s == 0 ? (LobbyController.Offline ? 0 : 1) : s == 1 ? 1 : 0)];
-    }
-
-    #region fixes
-
-    /// <summary> Changes the colors of materials and their shaders to match the style of the game. </summary>
-    public static void FixMaterials(GameObject obj) => obj.GetComponentsInChildren<Renderer>(true).DoIf(
-        r => r is not TrailRenderer,
-        r => r.materials.Do(m =>
-        {
-            m.color = Color.white;
-            m.shader = Shader;
-        }));
-
-    /// <summary> Tags after loading from a bundle changes due to the mismatch in the tags list, this method returns everything to its place. </summary>
+    /// <summary> Tags after loading from a bundle changes due to a mismatch in the tags list, this method returns everything to its place. </summary>
     public static string MapTag(string tag) => tag switch
     {
         "RoomManager" => "Body",
@@ -200,5 +189,82 @@ public class ModAssets
         _ => tag
     };
 
-    #endregion
+    /// <summary> Creates a new player doll from the prefab. </summary>
+    public static RemotePlayer CreateDoll()
+    {
+        // create a doll from the prefab obtained from the bundle
+        var obj = Entities.Mark(Doll);
+
+        // add components
+        var enemyId = obj.AddComponent<EnemyIdentifier>();
+        var machine = obj.AddComponent<Machine>();
+
+        enemyId.enemyClass = EnemyClass.Machine;
+        enemyId.enemyType = EnemyType.V2;
+        enemyId.dontCountAsKills = true;
+        enemyId.weaknesses = new string[0];
+        enemyId.burners = new();
+        enemyId.activateOnDeath = new GameObject[0];
+        machine.destroyOnDeath = new GameObject[0];
+        machine.hurtSounds = new AudioClip[0];
+
+        // add enemy identifier to all doll parts so that bullets can hit it
+        foreach (var rigidbody in obj.transform.GetChild(0).GetComponentsInChildren<Rigidbody>())
+        {
+            rigidbody.gameObject.AddComponent<EnemyIdentifierIdentifier>();
+            rigidbody.tag = MapTag(rigidbody.gameObject.tag);
+        }
+
+        // add a script to further control the doll
+        return obj.AddComponent<RemotePlayer>();
+    }
+
+    /// <summary> Returns the hand texture currently in use. Depends on whether the player is in the lobby or not. </summary>
+    /// <summary> handType == 0, feedbacker </summary>
+    /// <summary> handType == 1, the arm that holds the gun </summary>
+    /// <summary> handType >= 2, knuckleblaster </summary>
+    public static Texture HandTexture(Team team, byte handType = 0)
+    {
+        var s = (handType == 0) ? Settings.FeedColor : 
+                (handType == 1) ? Settings.HandColor :
+                                  Settings.KnuckleColor;
+
+        if (handType == 0)
+        {
+            if (LobbyController.Offline && s == 0) return HandTextures[0];
+            return s switch
+            {
+                0 => (team == Team.Blue) ? HandTextures[0] :
+                     (team == Team.Red)  ? HandTextures[0] :
+                                           HandTextures[1],
+                1 => HandTextures[1],
+                2 => HandTextures[4],
+                _ => HandTextures[0]
+            };
+        }
+        else if (handType == 1)
+        {
+            if (LobbyController.Offline && s == 0) return HandTextures[0];
+            return s switch
+            {
+                0 => (team == Team.Blue) ? HandTextures[0] :
+                     (team == Team.Red)  ? HandTextures[4] :
+                                           HandTextures[1],
+                1 => HandTextures[1],
+                2 => HandTextures[4],
+                _ => HandTextures[0]
+            };
+        }
+
+        if (LobbyController.Offline && s == 0) return HandTextures[2];
+        return s switch
+        {
+            0 => (team == Team.Blue) ? HandTextures[2] :
+                 (team == Team.Red)  ? HandTextures[2] :
+                                       HandTextures[3],
+            1 => HandTextures[3],
+            3 => HandTextures[5],
+            _ => HandTextures[2]
+        };
+    }
 }

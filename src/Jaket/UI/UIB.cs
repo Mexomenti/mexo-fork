@@ -32,18 +32,18 @@ public class UIB
     {
         // replace the font in a few in-game fragments
         Action fix;
-        Events.OnLoaded += fix = () => Events.Post(() =>
+        Events.OnLoaded += fix = () => Events.Post((Action)(() =>
         {
-            HudMessageReceiver.Instance.text.font = DollAssets.FontTMP;
-            NewMovement.Instance.youDiedText.font = DollAssets.Font;
+            HudMessageReceiver.Instance.text.font = ModAssets.FontTMP;
+            NewMovement.Instance.youDiedText.font = ModAssets.Font;
 
             // fix the sorting order to display hud messages on top of other interface fragments
-            if (!HudMessageReceiver.Instance.TryGetComponent<Canvas>(out _)) Component<Canvas>(HudMessageReceiver.Instance.gameObject, canvas =>
+            if (!HudMessageReceiver.Instance.TryGetComponent<Canvas>(out _)) Component(HudMessageReceiver.Instance.gameObject, (Canvas canvas) =>
             {
                 canvas.overrideSorting = true;
                 canvas.sortingOrder = 2000;
             });
-        });
+        }));
         fix();
 
         // find all sprites
@@ -146,7 +146,7 @@ public class UIB
         {
             text.text = name.StartsWith("#") ? Bundle.Get(name.Substring(1)) : name;
             text.color = color ?? white;
-            text.font = DollAssets.Font;
+            text.font = ModAssets.Font;
             text.fontSize = size;
             text.alignment = align;
         });
@@ -220,6 +220,9 @@ public class UIB
         var img = Image(team.ToString(), parent, r, team.Color());
         if (team == Team.Pink) Text("UwU", img.transform, r.Text, Dark(pink));
         if (team == Team.Purple) Text("UwU", img.transform, r.Text, Dark(Team.Purple.Color()));
+        if (team == Team.Blue) Text("V1", img.transform, r.Text, yellow);
+        if (team == Team.Red) Text("V2", img.transform, r.Text, yellow);
+
         return Component<Button>(img.gameObject, button =>
         {
             button.targetGraphic = img;

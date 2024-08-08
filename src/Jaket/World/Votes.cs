@@ -57,11 +57,11 @@ public class Votes
     /// <summary> Replaces Mirage with Virage, patches buttons and other minor stuff. </summary>
     public static void Init2S()
     {
-        var fallen = Tools.ObjFind("Canvas/PowerUpVignette/Panel/Aspect Ratio Mask/Fallen");
-        for (int i = 0; i < 4; i++)
-            fallen.transform.GetChild(i).GetComponent<Image>().sprite = ModAssets.ChanFallen;
+        // var fallen = Tools.ObjFind("Canvas/PowerUpVignette/Panel/Aspect Ratio Mask/Fallen");
+        // for (int i = 0; i < 4; i++)
+        //     fallen.transform.GetChild(i).GetComponent<Image>().sprite = DollAssets.ChanFallen;
 
-        Tools.ResFind<SpritePoses>(sp => Tools.IsReal(sp) && sp.copyChangeTo.Length > 0, sp => sp.poses = ModAssets.ChanPoses);
+        // Tools.ResFind<SpritePoses>(sp => Tools.IsReal(sp) && sp.copyChangeTo.Length > 0, sp => sp.poses = DollAssets.ChanPoses);
 
         Tools.ObjFind("Canvas/PowerUpVignette/Panel/Intro/Text").AddComponent<Voting>();
         Tools.ObjFind("Canvas/PowerUpVignette/Panel/Intro/Text (1)").AddComponent<Voting>();

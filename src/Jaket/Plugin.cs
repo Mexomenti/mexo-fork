@@ -84,7 +84,7 @@ public class Plugin : MonoBehaviour
         Weapons.Load();
         Bullets.Load();
         Items.Load();
-        DollAssets.Load();
+        ModAssets.Load();
 
         Administration.Load();
         LobbyController.Load();

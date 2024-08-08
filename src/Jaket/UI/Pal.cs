@@ -20,6 +20,7 @@ public static class Pal
 
     public static Color green = new(.2f, .8f, .2f);
     public static Color orange = new(1f, .65f, 0f);
+    public static Color yellow = new(1f, .8f, 0f);
     public static Color red = new(1f, .2f, .11f);
     public static Color blue = new(0f, .5f, 1f);
     public static Color pink = new(1f, .4f, .8f);
