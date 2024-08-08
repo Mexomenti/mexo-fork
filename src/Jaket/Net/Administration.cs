@@ -80,8 +80,7 @@ public class Administration
 
     public static void Kick(uint id)
     {
-        // use dummy packet type to prevent jaket from telling people they were banned
-        Networking.Send(PacketType.Dummy, null, (data, size) =>
+        Networking.Send(PacketType.Ban, null, (data, size) =>
         {
             var con = Networking.FindCon(id);
             Tools.Send(con, data, size);
