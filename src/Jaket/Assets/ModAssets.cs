@@ -9,6 +9,7 @@ using UnityEngine.Events;
 using Jaket.Content;
 using Jaket.Net;
 using Jaket.Net.Types;
+using Jaket.UI;
 using Jaket.UI.Dialogs;
 using Train;
 
@@ -22,7 +23,7 @@ public class ModAssets
     public static GameObject Doll, Preview;
 
     /// <summary> Jaket plushies. </summary>
-    public static GameObject V2, V3;
+    public static GameObject V2, V3, xzxADIxzx, Sowler;
 
     /// <summary> Player doll icon. </summary>
     public static Sprite Icon;
@@ -143,6 +144,23 @@ public class ModAssets
             V3.name = "DevPlushie (V3)";
             V3.GetComponentInChildren<Renderer>().material.mainTexture = t;
             V3.GetComponent<Rigidbody>().isKinematic = true;
+        });
+
+        LoadAsync<GameObject>("DevPlushie (xzxADIxzx).prefab", p =>
+        {
+            Object.DontDestroyOnLoad(xzxADIxzx = Items.Prefabs[EntityType.xzxADIxzx - EntityType.ItemOffset] = p);
+            FixMaterials(p);
+
+            UIB.Component<ItemIdentifier>(p, itemId =>
+            {
+                itemId.itemType = ItemType.CustomKey1;
+                itemId.pickUpSound = GameAssets.Squeaky();
+
+                itemId.reverseTransformSettings = true;
+
+                itemId.putDownRotation = new(0f, 120f, 90f);
+                itemId.putDownScale = new(.5f, .5f, .5f);
+            });
         });
     }
 
