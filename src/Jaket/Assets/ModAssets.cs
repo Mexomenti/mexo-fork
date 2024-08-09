@@ -151,7 +151,7 @@ public class ModAssets
         LoadAsync<GameObject>("DevPlushie (xzxADIxzx).prefab", p =>
         {
             Object.DontDestroyOnLoad(xzxADIxzx = Items.Prefabs[EntityType.xzxADIxzx - EntityType.ItemOffset] = p);
-            FixMaterials(p, new(1.2f, 1.2f, 1.2f));
+            FixMaterials(p, new(1.3f, 1.3f, 1.3f));
 
             UIB.Component<ItemIdentifier>(p, itemId =>
             {
