@@ -27,6 +27,16 @@ public static class TeamExtensions
         _ => new(1f, 1f, 1f)
     };
 
+    public static Color WingColor(this Team team) => team switch
+    {
+        Team.Red    => Team.Yellow.Color(),
+        Team.Green  => team.Color() * 1.2f,
+        Team.Blue   => Team.Yellow.Color(),
+        Team.Pink   => team.Color() * 1.2f,
+        Team.Purple => team.Color() * 1.5f,
+        _ => team.Color()
+    };
+
     /// <summary> Whether this team is allied with the player. </summary>
     public static bool Ally(this Team team) => team == Networking.LocalPlayer.Team || !LobbyController.PvPAllowed;
 }

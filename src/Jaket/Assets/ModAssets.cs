@@ -1,5 +1,6 @@
 namespace Jaket.Assets;
 
+using HarmonyLib;
 using System.IO;
 using TMPro;
 using UnityEngine;
@@ -11,7 +12,8 @@ using Jaket.Net;
 using Jaket.Net.Types;
 using Jaket.UI;
 using Jaket.UI.Dialogs;
-using Train;
+
+using Object = UnityEngine.Object;
 
 /// <summary> Class that works with the assets bundle of the mod. </summary>
 public class ModAssets
@@ -149,7 +151,7 @@ public class ModAssets
         LoadAsync<GameObject>("DevPlushie (xzxADIxzx).prefab", p =>
         {
             Object.DontDestroyOnLoad(xzxADIxzx = Items.Prefabs[EntityType.xzxADIxzx - EntityType.ItemOffset] = p);
-            FixMaterials(p);
+            FixMaterials(p, new(1.2f, 1.2f, 1.2f));
 
             UIB.Component<ItemIdentifier>(p, itemId =>
             {
@@ -182,21 +184,15 @@ public class ModAssets
     }
 
     /// <summary> Changes the colors of materials and their shaders to match the style of the game.. </summary>
-    public static void FixMaterials(GameObject obj)
-    {
-        foreach (var renderer in obj.GetComponentsInChildren<Renderer>(true))
+    /// <summary> Changes the colors of materials and their shaders to match the style of the game. </summary>
+    public static void FixMaterials(GameObject obj, Color? color = null) => obj.GetComponentsInChildren<Renderer>(true).DoIf(
+        r => r is not TrailRenderer,
+        r => r.materials.Do(m =>
         {
-            // component responsible for drawing the trace
-            if (renderer is TrailRenderer) continue;
+            m.color = color ?? Color.white;
+            m.shader = Shader;
+        }));
 
-            // body, rocket & hook materials
-            foreach (var mat in renderer.materials)
-            {
-                mat.color = Color.white;
-                mat.shader = Shader;
-            }
-        }
-    }
 
     /// <summary> Tags after loading from a bundle changes due to a mismatch in the tags list, this method returns everything to its place. </summary>
     public static string MapTag(string tag) => tag switch

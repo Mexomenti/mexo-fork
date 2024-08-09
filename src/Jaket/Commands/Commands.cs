@@ -72,7 +72,7 @@ public class Commands
             Msg("Voice actors", "Gianni, Weyte, Lenval, Joy, Mandy");
             Msg("Quality assurance", "Cameron, Dalia, Tucker, Scott");
             Msg("Other", "Jacob, Vvizard");
-            Msg("Machines", "V1, V2, V3");
+            Msg("Machines", "V1, V2, V3, xzxADIxzx");
             // Msg("Machines", "V1, V2, V3, xzxADIxzx, Sowler");
         });
         Handler.Register("plushie", "<name>", "Spawn a plushie by name", args =>
