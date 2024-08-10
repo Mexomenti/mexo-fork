@@ -12,7 +12,7 @@ using static Jaket.UI.Rect;
 public class Version
 {
     /// <summary> Current version of the mod installed by the player. </summary>
-    public const string CURRENT = "1.3.42";
+    public const string CURRENT = "1.3.42.1";
     /// <summary> Repository of the mod, where the newest version will be taken from. </summary>
     public const string REPO = "xzxADIxzx/Join-and-kill-em-together";
     /// <summary> Github API URL. I think it's not difficult to guess. </summary>
@@ -26,7 +26,7 @@ public class Version
     /// <summary> Checks for updates using Github and notifies the player about it. </summary>
     public static void Check4Update() => Fetch((done, result) =>
     {
-        if (done && Parse(result, out var latest, out var name) && latest != CURRENT) Bundle.Hud("version.outdated", false, CURRENT, latest, name);
+        if (done && Parse(result, out var latest, out var name) && !CURRENT.Contains(latest)) Bundle.Hud("version.outdated", false, CURRENT, latest, name);
     });
 
     /// <summary> Fetches a json file with all versions of the mod from GitHub. </summary>
@@ -55,7 +55,7 @@ public class Version
     /// <summary> Adds the mod version to the bottom left edge of the screen. </summary>
     public static void Label(Transform parent)
     {
-        var r = Blw(36f, 40f);
+        UI.Rect r = new(16f + 380f / 2f, 36f, 380f, 40f, new(0f, 0f));
         UIB.Table("Version", parent, r, table => UIB.Text($"Jaket version is {CURRENT}", table, r.Text, Color.grey));
     }
 }

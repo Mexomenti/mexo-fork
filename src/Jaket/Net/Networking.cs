@@ -86,6 +86,7 @@ public class Networking
         SteamMatchmaking.OnLobbyMemberJoined += (lobby, member) =>
         {
             if (!Administration.Banned.Contains(member.Id.AccountId)) Bundle.Msg("player.joined", member.Name);
+            lobby.SendChatString("Hey, this lobby was made with modded jaket so you might experience some issues :)");
         };
 
         SteamMatchmaking.OnLobbyMemberLeave += (lobby, member) =>
