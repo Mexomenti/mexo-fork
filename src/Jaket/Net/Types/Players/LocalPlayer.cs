@@ -50,7 +50,7 @@ public class LocalPlayer : Entity
         Events.OnTeamChanged += () =>
         {
             var light = nm.transform.Find("Point Light");
-            if (light) light.GetComponent<Light>().color = LobbyController.Offline ? Color.white : Team.WingColor();
+            if (light) light.GetComponent<Light>().color = LobbyController.Offline ? Color.white : Team.LightColor();
         };
     }
 

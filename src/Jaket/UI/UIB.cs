@@ -217,11 +217,23 @@ public class UIB
     /// <summary> Adds a command button with the appropriate color. </summary>
     public static Button TeamButton(Team team, Transform parent, Rect r, Action clicked = null)
     {
-        var img = Image(team.ToString(), parent, r, team.Color());
-        if (team == Team.Pink) Text("UwU", img.transform, r.Text, Dark(pink));
-        if (team == Team.Purple) Text("UwU", img.transform, r.Text, Dark(Team.Purple.Color()));
-        if (team == Team.Blue) Text("V1", img.transform, r.Text, yellow);
-        if (team == Team.Red) Text("V2", img.transform, r.Text, yellow);
+        var img = Image(team.ToString(), parent, r, team.UIColor());
+
+        Text(team switch {
+            Team.Blue   => "V1",
+            Team.Fraud  => "F1",
+            Team.Red    => "V2",
+            Team.Pink   => "UwU",
+            Team.Purple => "UwU",
+            _ => ""
+        }, img.transform, r.Text, team switch {
+            Team.Blue   => yellow,
+            Team.Fraud  => yellow,
+            Team.Red    => yellow,
+            Team.Pink   => Dark(pink),
+            Team.Purple => Dark(team.Color()),
+            _ => Color.white
+        });
 
         return Component<Button>(img.gameObject, button =>
         {
@@ -232,7 +244,7 @@ public class UIB
 
     /// <summary> Adds a button that opens the profile of the given member. </summary>
     public static Button ProfileButton(Friend member, Transform parent, Rect r) =>
-        Button(member.Name, parent, r, Networking.GetTeam(member).Color(), 24, clicked: () => SteamFriends.OpenUserOverlay(member.Id, "steamid"));
+        Button(member.Name, parent, r, Networking.GetTeam(member).UIColor(), 24, clicked: () => SteamFriends.OpenUserOverlay(member.Id, "steamid"));
 
     /// <summary> Adds a button that changes the given keybind. </summary>
     public static Button KeyButton(string name, KeyCode current, Transform parent, Rect r)

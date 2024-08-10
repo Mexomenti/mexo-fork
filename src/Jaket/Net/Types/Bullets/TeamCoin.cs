@@ -63,7 +63,7 @@ public class TeamCoin : OwnableEntity
                 trail ??= GetComponent<TrailRenderer>();
 
                 mat.mainTexture = ModAssets.CoinTexture;
-                mat.color = Team.Color();
+                mat.color = Team.CoinColor();
                 trail.startColor = Team.Color() with { a = .5f };
             }
             Reset();

@@ -37,8 +37,9 @@ public class Tools
     public static string ChatStr(string msg) => msg.Replace("[", "\\[").Replace("]", "\\]");
     /// <summary>
     /// <summary> get the maximum value of an emum </summary>
-    public static int EnumMax<T>() {
-        int[] vals = ((int[])Enum.GetValues(typeof(T)));
+    public static int EnumMax<T>() where T: Enum
+    {
+        int[] vals = (int[])Enum.GetValues(typeof(T));
         return vals[vals.Length - 1];
     }
     /// </summary>

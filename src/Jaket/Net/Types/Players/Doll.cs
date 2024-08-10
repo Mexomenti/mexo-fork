@@ -146,12 +146,7 @@ public class Doll : MonoBehaviour
     public void ApplyTeam(Team team)
     {
         WingMat.mainTexture = SkateMat.mainTexture = ModAssets.WingTextures[(int)team];
-        BodyMat.mainTexture = team switch
-        {
-            Team.Blue => ModAssets.BodyTextures[1], 
-            Team.Red => ModAssets.BodyTextures[2], 
-            _ => ModAssets.BodyTextures[0]
-        };
+        BodyMat.mainTexture = ModAssets.BodyTextures[(int)team];
         
         CoinMat.color = team.Color();
         if (WingTrail) WingTrail.startColor = team.Color() with { a = .5f };

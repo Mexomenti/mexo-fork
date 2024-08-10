@@ -63,7 +63,21 @@ public class ModAssets
         Shader = AssetHelper.LoadPrefab("cb3828ada2cbefe479fed3b51739edf6").GetComponent<global::V2>().smr.material.shader;
         WingTextures = new Texture[Tools.EnumMax<Team>() + 1];
         HandTextures = new Texture[6];
-        BodyTextures = new Texture[3];
+        BodyTextures = new Texture[Tools.EnumMax<Team>() + 1];
+
+        for (int i = 0; i < BodyTextures.Length; ++i)
+        {
+            var index = i;
+            string name = "V3-body-" + ((Team)i).ToString();
+
+            if (!Bundle.Contains(name))
+            {
+                LoadAsync<Texture>("V3-body", tex => BodyTextures[index] = tex);
+                continue;
+            }
+
+            LoadAsync<Texture>(name, tex => BodyTextures[index] = tex);
+        }
 
         // loading wing textures from the bundle
         for (int i = 0; i < WingTextures.Length; i++)
@@ -71,10 +85,6 @@ public class ModAssets
             var index = i; // C# sucks
             LoadAsync<Texture>("V3-wings-" + ((Team)i).ToString(), tex => WingTextures[index] = tex);
         }
-
-        LoadAsync<Texture>("v3-body", tex => BodyTextures[0] = tex);
-        LoadAsync<Texture>("v3-body-blue", tex => BodyTextures[1] = tex);
-        LoadAsync<Texture>("v3-body-red", tex => BodyTextures[2] = tex);
 
         LoadAsync<Texture>("V3-hand", tex => HandTextures[1] = tex);
         LoadAsync<Texture>("V3-blast", tex => HandTextures[3] = tex);
@@ -184,7 +194,6 @@ public class ModAssets
     }
 
     /// <summary> Changes the colors of materials and their shaders to match the style of the game.. </summary>
-    /// <summary> Changes the colors of materials and their shaders to match the style of the game. </summary>
     public static void FixMaterials(GameObject obj, Color? color = null) => obj.GetComponentsInChildren<Renderer>(true).DoIf(
         r => r is not TrailRenderer,
         r => r.materials.Do(m =>
