@@ -86,6 +86,7 @@ public class Networking
         SteamMatchmaking.OnLobbyMemberJoined += (lobby, member) =>
         {
             if (!Administration.Banned.Contains(member.Id.AccountId)) Bundle.Msg("player.joined", member.Name);
+            if (!LobbyController.IsOwner) return;
             lobby.SendChatString("[10][yellow]This server is hosted on glitch's custom jaket fork, problems may happen, report all issues to https://discord.gg/RMenybbnpQ and not to the normal jaket developers");
         };
 
