@@ -44,7 +44,7 @@ public class GameAssets
     {
         "Hakita", "PITR", "Dawg", "Heckteck", ". (CabalCrow) Variant", "Lucas", "Francis", "Jericho", "BigRock", "Mako",
         "Sam", "Salad", "Meganeko", "KGC", "HEALTH - BJ", "HEALTH - Jake", "HEALTH - John", "Quetzal", "Gianni", "Weyte",
-        "Lenval", "Joy", "Mandy", "Cameron", "Dalia", "Tucker", "Scott", "Jacob", "Vvizard", ".", ".", ".", ".", /* "." */
+        "Lenval", "Joy", "Mandy", "Cameron", "Dalia", "Tucker", "Scott", "Jacob", "Vvizard", ".", ".", ".", ".", "."
     };
 
     /// <summary> List of readable names of all dev plushies. </summary>
@@ -52,7 +52,7 @@ public class GameAssets
     {
         "hakita", "pitr", "victoria", "heckteck", "cabalcrow", "lucas", "francis", "jericho", "bigrock", "mako",
         "samuel", "salad", "meganeko", "kgc", "bj", "jake", "john", "quetzal", "gianni", "weyte",
-        "lenval", "joy", "mandy", "cameron", "dalia", "tucker", "scott", "jacob", "vvizard", "v1", "v2", "v3", "xzxadixzx", /* "sowler" */
+        "lenval", "joy", "mandy", "cameron", "dalia", "tucker", "scott", "jacob", "vvizard", "v1", "v2", "v3", "xzxadixzx", "sowler"
     };
 
     #endregion
@@ -61,6 +61,8 @@ public class GameAssets
     private static GameObject Prefab(string name) => AssetHelper.LoadPrefab($"Assets/Prefabs/{name}.prefab");
 
     private static void Material(string name, Action<Material> cons) => Addressables.LoadAssetAsync<Material>($"Assets/Models/{name}.mat").Task.ContinueWith(t => cons(t.Result));
+
+    private static void Sound(string name, Action<AudioClip> cons) => Addressables.LoadAssetAsync<AudioClip>($"Assets/Sounds/{name}.ogg").Task.ContinueWith(t => cons(t.Result));
 
     #endregion
     #region loading
@@ -95,6 +97,9 @@ public class GameAssets
 
     /// <summary> Loads an insurrectionist material by name. </summary>
     public static void SisyMaterial(string name, Renderer[] output) => Material($"Enemies/Sisyphus/{name}", mat => output[0].material = output[1].material = mat);
+
+    /// <summary> Loads a Gabriel voice line by name. </summary>
+    public static void GabLine(string name, Action<AudioClip> output) => Sound($"Voices/Gabriel/{name}", output);
 
     #endregion
 }
