@@ -45,6 +45,7 @@ public class LobbyController
     public static void ScaleHealth(ref float health) => health *= 1f + Math.Min(Lobby?.MemberCount - 1 ?? 1, 1) * PPP;
     /// <summary> Whether the given lobby is created via Multikill. </summary>
     public static bool IsMultikillLobby(Lobby lobby) => lobby.Data.Any(pair => pair.Key == "mk_lobby");
+    public static int MaxPlayerCount => 0x7FFFFFFF;
 
     /// <summary> Creates the necessary listeners for proper work. </summary>
     public static void Load()
@@ -90,7 +91,7 @@ public class LobbyController
         Log.Debug("Creating a lobby...");
 
         CreatingLobby = true;
-        SteamMatchmaking.CreateLobbyAsync(250).ContinueWith(task =>
+        SteamMatchmaking.CreateLobbyAsync(MaxPlayerCount).ContinueWith(task =>
         {
             CreatingLobby = false; IsOwner = true;
             Lobby = task.Result;

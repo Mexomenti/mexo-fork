@@ -1,11 +1,10 @@
-.settings/*
-.vscode/*
+.settings/
+.vscode/
 .vs/
 
-bin/*
-obj/*
-lib/*
-build/*
+bin/
+obj/
+build/
 
 *.kra
 *.fbx

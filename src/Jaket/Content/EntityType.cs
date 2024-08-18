@@ -54,7 +54,10 @@ public enum EntityType
     SecuritySystem_Tower, SecuritySystem_Tower_,
     Brain,
 
-    Dummy0, Dummy1, // These two dummy values are a quick fix to prevent item id desync, remove after the next jaket update
+    // These two dummy values are a quick fix to prevent skull item id desync with players on Jaket 1.3.42
+    // These should be removed after the next Jaket update
+    // No, I will not be fixing plushies before the update - whyis2plus2
+    Dummy0, Dummy1,
     BlueSkull,
     RedSkull,
     Soap,
