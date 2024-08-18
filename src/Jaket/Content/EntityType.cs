@@ -54,6 +54,7 @@ public enum EntityType
     SecuritySystem_Tower, SecuritySystem_Tower_,
     Brain,
 
+    Dummy0, Dummy1, // These two dummy values are a quick fix to prevent item id desync, remove after the next jaket update
     BlueSkull,
     RedSkull,
     Soap,

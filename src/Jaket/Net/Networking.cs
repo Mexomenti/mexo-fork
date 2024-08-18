@@ -87,7 +87,6 @@ public class Networking
         {
             if (!Administration.Banned.Contains(member.Id.AccountId)) Bundle.Msg("player.joined", member.Name);
             if (!LobbyController.IsOwner) return;
-            lobby.SendChatString("[10][yellow]This server is hosted on glitch's custom jaket fork, problems may happen, report all issues to https://discord.gg/RMenybbnpQ and not to the normal jaket developers");
         };
 
         SteamMatchmaking.OnLobbyMemberLeave += (lobby, member) =>
@@ -213,7 +212,7 @@ public class Networking
         : (Entities.TryGetValue(friend.Id.AccountId, out var entity) && entity && entity is RemotePlayer player ? player.Team : Team.Yellow);
 
     /// <summary> Returns the hex color of the friend's team. </summary>
-    public static string GetTeamColor(Friend friend) => ColorUtility.ToHtmlStringRGBA(GetTeam(friend).Color());
+    public static string GetTeamColor(Friend friend) => ColorUtility.ToHtmlStringRGBA(GetTeam(friend).UIColor());
 
     /// <summary> Finds a connection by id or returns null if there is no such connection. </summary>
     public static Connection? FindCon(uint id)

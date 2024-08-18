@@ -12,6 +12,7 @@ using Jaket.Net;
 using Jaket.Net.Types;
 using Jaket.Sprays;
 using Jaket.World;
+using Jaket.UI.Dialogs;
 
 /// <summary> Host endpoint processing socket events and client packets. </summary>
 public class Server : Endpoint, ISocketManager
@@ -208,6 +209,8 @@ public class Server : Endpoint, ISocketManager
             Log.Debug("[Server] Connection rejected: either a non-steam user or not in the lobby");
             con.Close();
         }
+
+        if (LobbyController.IsOwner) Chat.Instance.Send("[10][yellow]This server is hosted on glitch's custom jaket fork, problems may happen, report all issues to https://discord.gg/RMenybbnpQ and not to the normal jaket developers");
     }
 
     public void OnConnected(Connection con, ConnectionInfo info)
