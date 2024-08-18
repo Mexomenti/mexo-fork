@@ -49,9 +49,6 @@ public class Networking
         Events.EveryTick += NetworkUpdate;
         Events.EveryDozen += Optimize;
 
-        Events.OnLoaded += () => WasMultiplayerUsed = LobbyController.Online;
-        Events.OnLobbyAction += () => WasMultiplayerUsed |= LobbyController.Online;
-
         Events.OnLoadingStarted += () =>
         {
             if (LobbyController.Online) SceneHelper.SetLoadingSubtext(UnityEngine.Random.value < .042f ? "DOCTOR SEX!!!" : "/// MULTIPLAYER VIA JAKET ///");
