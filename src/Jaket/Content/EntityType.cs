@@ -3,6 +3,12 @@ namespace Jaket.Content;
 /// <summary> All entity types. Will replenish over time. </summary>
 public enum EntityType
 {
+    BurntStuff = -1,
+    SkullBait = -1,
+    V2 = -1,
+    V3 = -1,
+    xzxADIxzx = -1,
+    Sowler = -1,
     None = -1,
     Player,
 
@@ -57,28 +63,13 @@ public enum EntityType
     // These two dummy values are a quick fix to prevent skull item id desync with players on Jaket 1.3.42
     // These should be removed after the next Jaket update
     // No, I will not be fixing plushies before the next unmodded Jaket update - whyis2plus2
-    Dummy0, Dummy1,
+    AppleBait,
+    MauriceBait,
     BlueSkull,
     RedSkull,
     Soap,
     Torch,
     Florp,
-
-    AppleBait,
-    SkullBait,
-    FunnyStupidFish,
-    PitrFish,
-    TroutFish,
-    MetalFish,
-    ChomperFish,
-    BombFish,
-    EyeballFish,
-    FrogFish,
-    DopeFish,
-    StickFish,
-    CookedFish,
-    Shark,
-    BurntStuff,
 
     Hakita,
     Pitr,
@@ -110,10 +101,6 @@ public enum EntityType
     Jacob,
     Vvizard,
     V1,
-    V2,
-    V3,
-    xzxADIxzx,
-    Sowler,
 
     Coin,
     Rocket,
@@ -121,8 +108,8 @@ public enum EntityType
 
     EnemyOffset = Filth,
     SecuritySystemOffset = SecuritySystem_Main,
-    ItemOffset = BlueSkull,
-    FishOffset = AppleBait,
+    ItemOffset = AppleBait,
+    FishOffset = -42,
     PlushieOffset = Hakita,
     BulletOffset = Coin
 }
@@ -144,10 +131,10 @@ public static class TypeExtensions
     public static bool IsTargetable(this EntityType type) => IsEnemy(type) && type != EntityType.Idol && type != EntityType.CancerousRodent;
 
     /// <summary> Whether the type is an item. </summary>
-    public static bool IsItem(this EntityType type) => type >= EntityType.ItemOffset && type < EntityType.FishOffset;
+    public static bool IsItem(this EntityType type) => type >= EntityType.ItemOffset && type < EntityType.PlushieOffset;
 
     /// <summary> Whether the type is a bait or fish. </summary>
-    public static bool IsFish(this EntityType type) => type >= EntityType.FishOffset && type < EntityType.PlushieOffset;
+    public static bool IsFish(this EntityType type) => false;
 
     /// <summary> Whether the type is a plushie. </summary>
     public static bool IsPlushie(this EntityType type) => type >= EntityType.PlushieOffset && type < EntityType.BulletOffset;
