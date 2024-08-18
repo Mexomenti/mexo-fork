@@ -45,7 +45,7 @@ public class LobbyController
     public static void ScaleHealth(ref float health) => health *= 1f + Math.Min(Lobby?.MemberCount - 1 ?? 1, 1) * PPP;
     /// <summary> Whether the given lobby is created via Multikill. </summary>
     public static bool IsMultikillLobby(Lobby lobby) => lobby.Data.Any(pair => pair.Key == "mk_lobby");
-    public static int MaxPlayerCount => 0x7FFFFFFF;
+    public static byte MaxPlayerCount => 255;
 
     /// <summary> Creates the necessary listeners for proper work. </summary>
     public static void Load()
@@ -187,36 +187,101 @@ public class LobbyController
     /// <summary> Maps the map name so that it is more understandable to an average player. </summary>
     public static string MapMap(string map) => map switch
     {
-        "Tutorial" => "Tutorial",
-        "uk_construct" => "Sandbox",
-        "Endless" => "Cyber Grind",
+        "Tutorial"       => "Tutorial",
+        "uk_construct"   => "Sandbox",
+        "Endless"        => "Cyber Grind",
         "CreditsMuseum2" => "Museum",
-        "Intermission1" => "Intermission",
-        "Intermission2" => "Intermission",
+        "Intermission1"  => "Intermission",
+        "Intermission2"  => "Intermission",
+        "Level 4-S"      => "Myth",
 
         // custom level normalization
-        // ultrabus
+        // Ultrabus
         "UltrabusLmao" => "Ultrabus",
 
-        // envy
-        "RaifuLostFieldsenvyb" => "Envy (E-1)",
-        "raifuenvypalaceforbundle" => "Envy (E-2)",
-        "RaifuCastleManiacTheReal" => "Envy (E-3)",
-        "RaifuEveryStarInTheSkyReal" => "Envy (E-4)",
+        // levels in the Purgatorio campaign
+        // Rubicon/Carcass
+        "remphase.hydraxous.rubicon.first"  => "Rubicon-1",
+        "remphase.hydraxous.rubicon.second" => "Rubicon-2",
 
-        // layers of grief
-        "QoDaX.BargainingFirst" => "Layers of Grief (3-1)",
-        "QoDaX.AcceptanceFirst" => "Layers of Grief (5-1)",
+        // Envy
+        "RaifuLostFieldsenvyb"       => "Envy-1",
+        "raifuenvypalaceforbundle"   => "Envy-2",
+        "RaifuCastleManiacTheReal"   => "Envy-3",
+        "RaifuEveryStarInTheSkyReal" => "Envy-4",
 
-        // where the streets have no name
-        "pkpseudo-nonamestreets" => "<size=15>Where The Streets Have No Name</size>",
+        // Indulgence
+        "mag.indulgence.thedeathofparadigm" => "Indulgence-1",
 
-        // violence encore
-        "brushtromein-7-1-1" => "<size=20>Violence Encore (7-1-1)</size>",
-        "brushtromein-7-3-1-new" => "<size=20>Violence Encore (7-3-1)</size>",
+        // Paradiso
+        "frizou.paradiso.moonFirst" => "Paridiso 1-1",
+
+        // Layers Of Grief
+        "QoDaX.BargainingFirst" => "Bargaining-1",
+        "QoDaX.AcceptanceFirst" => "Acceptance-1",
+
+        // Where The Streets Have No Name
+        "pkpseudo-nonamestreets" => "WTSHNN",
+
+        // Prelude Xtreme
+        "SSSoap:PX-0-1" => "PreludeXtreme-1",
+        "SSSoap:PX-0-2" => "PreludeXtreme-2",
+
+        // Violence Encore ::: Eyes Of Death
+        "brushtromein-7-1-1"     => "V. Encore 7-1-1",
+        "brushtromein-7-3-1-new" => "V. Encore 7-3-1",
+
+        // MegaFraud
+        "megacheb.tasb" => "MegaFraud",
+
+        // Fraudulence
+        "Spelunky.FRAUDULENCE_FIRST"  => "Fraudulence-1",
+        "Spelunky.FRAUDULENCE_SECOND" => "Fraudulence-2",
+
+        // Fraud ::: Higher Than The Black Sky
+        "82.Fraud.HigherTTBS" => "Fraud HTTBS",
+
+        // Finale
+        "fruitc.finale"   => "Finale-1",
+        "fruic.finale2"   => "Finale-2",
+        "fruitc.finale2b" => "Finale-2B",
+
+        // The Cheb Museum
+        "chebm.essentials" => "Cheb Museum",
+
+        // Minecraft
+        "ceo_of_gaming.overworld.1"      => "Minecraft O-1",
+        "ceo_of_gaming.overworld.2"      => "Minecraft O-2",
+        "ceo_of_gaming.minecraft.nether" => "Minecraft N-1",
+
+        // Cult Of Dopefish
+        "willem1321.cultofdopefish" => "CultOfDopefish",
+
+        // The Cyber Grind?
+        "Rude.Jam.cool.level" => "TheCyberGrind?",
+
+        // Bloody Tears
+        "riko.uk.bloodytears" => "Bloody Tears",
+
+        // The Weight Of The World
+        "TheWeightOfTheWorldWrath.Gerigrape9" => "Pandemonium",
+
+        // uk_flatgrass2
+        "willem1321-ukflatgrass2" => "uk_flatgrass2",
+
+        // V3's Showdown
+        "t.trinity.v3" => "V3's Showdown",
+
+        // // Epitaph //
+        "willem1321-epitaph" => "Epitaph",
+
+        // SkillTests
+        "willem1321.theskilltest" => "SkillTest 1",
+        "willem1321-skilltest2"   => "SkillTest 2",
+        "willem1321-premonitions" => "SkillTest 2.5",
 
         _ => map.Substring("Level ".Length)
-    };
+};
 
     #endregion
 }
