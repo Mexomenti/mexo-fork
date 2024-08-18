@@ -281,7 +281,7 @@ public class LobbyController
         "willem1321-premonitions" => "SkillTest 2.5",
 
         _ => map.Substring("Level ".Length)
-};
+    };
 
     #endregion
 }
