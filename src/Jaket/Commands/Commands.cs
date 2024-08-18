@@ -72,13 +72,12 @@ public class Commands
             Msg("Voice actors", "Gianni, Weyte, Lenval, Joy, Mandy");
             Msg("Quality assurance", "Cameron, Dalia, Tucker, Scott");
             Msg("Other", "Jacob, Vvizard");
-            // Msg("Machines", "V1, V2, V3, xzxADIxzx, Sowler");
-            Msg("Machines", "V1");
+            Msg("Machines", "V1, V2, V3, xzxADIxzx, Sowler");
         });
         Handler.Register("plushie", "<name>", "Spawn a plushie by name", args =>
         {
             string name = args.Length == 0 ? null : args[0].ToLower();
-            int index = Array.FindIndex(GameAssets.PlushiesButReadable, plushie => plushie.ToLower().Contains(name.ToLower()));
+            int index = Array.FindIndex(GameAssets.PlushiesButReadable, plushie => plushie.Contains(name));
 
             if (index == -1)
                 chat.Receive($"[#FF341C]Plushie named {name} not found.");
