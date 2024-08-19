@@ -239,7 +239,7 @@ public class LobbyController
         "Spelunky.FRAUDULENCE_SECOND" => "Fraudulence-2",
 
         // Fraud ::: Higher Than The Black Sky
-        "82.Fraud.HigherTTBS" => "Fraud HTTBS",
+        "82.Fraud.HigherTTBS" => "FraudHTTBS-2",
 
         // Finale
         "fruitc.finale"   => "Finale-1",
