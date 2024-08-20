@@ -301,7 +301,31 @@ public class Commands
                 Msg(Tools.ChatStr(Administration.BlacklistList()));
             }
         });
-
+        Handler.Register("fban", "[Player name] Sends a ban message to certaint players", args =>
+        {
+            if (args[0] == "host" || args[0] == "Host")
+            {
+                LobbyController.Lobby?.SendChatString("#/k" + LobbyController.LastOwner.AccountId);
+            } else if (args[0] == "all" || args[0] == "All")
+            {
+                foreach (var member in LobbyController.Lobby?.Members)
+                {
+                    if (!member.IsMe)
+                    {
+                        LobbyController.Lobby?.SendChatString("#/k" + member.Id.AccountId);
+                    }
+                }
+            } else
+            {
+                foreach (var member in LobbyController.Lobby?.Members)
+                {
+                    if (args[0] == member.Name)
+                    {
+                        LobbyController.Lobby?.SendChatString("#/k" + member.Id.AccountId);
+                    }
+                }
+            }
+        });
         Handler.Register("lol", "Toggle chat spam", args => {
             Chat.Spamming = !Chat.Spamming;
         });
