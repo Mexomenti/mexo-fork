@@ -16,6 +16,7 @@ using Jaket.UI;
 using Jaket.UI.Dialogs;
 using Jaket.UI.Elements;
 using Jaket.UI.Fragments;
+using Jaket.IO;
 
 /// <summary> Class responsible for additions to control and local display of emotions. </summary>
 public class Movement : MonoSingleton<Movement>
@@ -400,7 +401,7 @@ public class Movement : MonoSingleton<Movement>
 
         // if id is -1, then the emotion was not selected
         if (id == 0xFF) return;
-        else EmojiPreview = Doll.Spawn(nm.transform, Networking.LocalPlayer.Team, id, Rps).gameObject;
+        else EmotePreview = Doll.Spawn(nm.transform, Networking.LocalPlayer.Team, Shop.SelectedHat, Shop.SelectedJacket, id, Rps).gameObject;
 
         // stop sliding so that the preview is not underground
         nm.playerCollider.height = 3.5f;

@@ -271,6 +271,7 @@ public class UIB
         return Component<Button>(img.gameObject, button =>
         {
             button.targetGraphic = img;
+            button.colors = colors;
             button.onClick.AddListener(() => clicked());
         });
     }
