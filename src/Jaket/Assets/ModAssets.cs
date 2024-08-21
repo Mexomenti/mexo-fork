@@ -195,7 +195,7 @@ public class ModAssets
         });
 
         // shop
-        Load<TextAsset>("shop-entries", f =>
+        LoadAsync<TextAsset>("shop-entries", f =>
         {
             Shop.Load(f.text);
             Shop.LoadPurchases();

@@ -401,7 +401,7 @@ public class Movement : MonoSingleton<Movement>
 
         // if id is -1, then the emotion was not selected
         if (id == 0xFF) return;
-        else EmotePreview = Doll.Spawn(nm.transform, Networking.LocalPlayer.Team, Shop.SelectedHat, Shop.SelectedJacket, id, Rps).gameObject;
+        else EmojiPreview = Doll.Spawn(nm.transform, Networking.LocalPlayer.Team, Shop.SelectedHat, Shop.SelectedJacket, id, Rps).gameObject;
 
         // stop sliding so that the preview is not underground
         nm.playerCollider.height = 3.5f;

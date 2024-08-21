@@ -39,7 +39,7 @@ public class Doll : MonoBehaviour
     public Vector3 HoldPosition => Hooking ? Hook.position : HookRoot.position;
 
     /// <summary> Materials of the wings, coin, skateboard and big ears. </summary>
-    public Material WingMat, CoinMat, SkateMat, EarsMat;
+    public Material WingMat, CoinMat, SkateMat, EarsMat, BodyMat;
     /// <summary> Trail of the wings. </summary>
     public TrailRenderer WingTrail;
     /// <summary> Light of the wings. </summary>
