@@ -111,10 +111,7 @@ public class Commands
         {
             if (args.Length == 1 && args[0].Contains("-")) args = args[0].Split('-');
 
-            if (!LobbyController.IsOwner)
-                chat.Receive($"[#FF341C]Only the lobby owner can load levels.");
-
-            else if (args.Length >= 1 && (args[0].ToLower() == "sandbox" || args[0].ToLower() == "sand"))
+            if (args.Length >= 1 && (args[0].ToLower() == "sandbox" || args[0].ToLower() == "sand"))
             {
                 Tools.Load("uk_construct");
                 chat.Receive("[#32CD32]Sandbox is loading.");
