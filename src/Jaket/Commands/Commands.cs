@@ -32,6 +32,28 @@ public class Commands
         });
         Handler.Register("hello", "Resend the tips for new players", args => chat.Hello(true));
 
+        Handler.Register("ccm", "<color> <tag> <message> send a custom message with a custom tag", args =>
+        {
+            string msg = args[2];
+            msg = msg.Trim(); // remove extra spaces from the message before formatting
+            Chat cht = new Chat();
+            // if the message is not empty, then send it to other players and remember it
+            if (Bundle.CutColors(msg).Trim() != "")
+            {
+                if (!Commands.Handler.Handle(msg))
+                {
+                    string msgTag = "[#"+args[0]+"]["+args[1]+"][#FFFFFF] " + msg;
+                    LobbyController.Lobby?.SendChatString(msgTag);
+                }
+
+                cht.messages.Insert(0, msg);
+            }
+
+            cht.Field.text = "";
+            cht.messageIndex = -1;
+            Events.Post(cht.Toggle);
+        });
+
         Handler.Register("tts-volume", "\\[0-100]", "Set Sam's volume to keep your ears comfortable", args =>
         {
             if (args.Length == 0)

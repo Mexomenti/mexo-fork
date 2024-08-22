@@ -51,9 +51,9 @@ public class Chat : CanvasSingleton<Chat>
     private float lastMessageTime;
     public static bool Spamming = false;
     /// <summary> Messages sent by the player. </summary>
-    private List<string> messages = new();
+    public List<string> messages = new();
     /// <summary> Index of the current message in the list. </summary>
-    private int messageIndex;
+    public int messageIndex;
 
     private void Start()
     {
