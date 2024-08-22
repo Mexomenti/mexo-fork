@@ -42,7 +42,7 @@ public class Commands
             {
                 if (!Commands.Handler.Handle(msg))
                 {
-                    string msgTag = "[#"+args[0]+"]["+args[1]+"][#FFFFFF] " + msg;
+                    string msgTag = "["+args[0]+"]{"+args[1]+"}[FFFFFF] " + msg;
                     LobbyController.Lobby?.SendChatString(msgTag);
                 }
 
