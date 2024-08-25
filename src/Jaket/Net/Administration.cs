@@ -184,6 +184,25 @@ public class Administration
         return ret;
     }
 
+    public static List<string> BlacklistToList() {
+        string ret = "";
+
+        if (Tools.CachedBlacklist.Length == 0) {
+            return "[Blacklist] There's nobody in your blacklist";
+        }
+
+        for (int i = 0; i < Tools.CachedBlacklist.Length; ++i) {
+            string line = Tools.CachedBlacklist[i];
+
+            if (uint.TryParse(line, out uint uid))
+            {
+                ret.Append(Tools.CachedBlacklist[i - 1]);
+            }
+        }
+
+        return ret;
+    }
+
     /// <summary> Whether the player is sending a large amount of data. </summary>
     public static bool IsSpam(uint id, int amount) => spam.Count(id, amount) >= SPAM_RATE;
 
