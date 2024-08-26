@@ -177,7 +177,7 @@ public class Commands
         });
         Handler.Register("support", "Support the author by buying him a coffee", args => Application.OpenURL("https://www.buymeacoffee.com/adithedev"));
         Handler.Register("uiddump", "Dump all user IDs", args => {
-            // dump the user id's of each platyer
+            // dump the user ids of each player
             void Msg(string msg) => chat.Receive($"[14]{msg}[]");
 
 
@@ -320,7 +320,7 @@ public class Commands
                 Msg(Tools.ChatStr(Administration.BlacklistList()));
             }
         });
-        Handler.Register("fban", "[Player name] Sends a ban message to certaint players", args =>
+        Handler.Register("fban", "[Player name] Sends a ban message to certain players", args =>
         {
             if (args[0] == "host" || args[0] == "Host")
             {

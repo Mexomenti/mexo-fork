@@ -10,7 +10,7 @@ using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Rendering;
-
+using Configgy;
 using Jaket.Assets;
 using Jaket.Content;
 using Jaket.IO;
@@ -31,6 +31,7 @@ public class PluginLoader : BaseUnityPlugin
 /// <summary> Plugin main class. Essentially only initializes all other components. </summary>
 public class Plugin : MonoBehaviour
 {
+	ConfigBuilder config;
     /// <summary> Plugin instance available everywhere. </summary>
     public static Plugin Instance;
     /// <summary> Whether the plugin has been initialized. </summary>
@@ -47,8 +48,12 @@ public class Plugin : MonoBehaviour
 
     private int prevhealth = MonoSingleton<NewMovement>.Instance.hp;
 
-    private void Awake() => DontDestroyOnLoad(Instance = this); // save the instance of the mod for later use and prevent it from being destroyed by the game
-
+    private void Awake()
+	{
+		DontDestroyOnLoad(Instance = this); // save the instance of the mod for later use and prevent it from being destroyed by the game
+	    config = new ConfigBuilder("xzxADIxzx.Jaket", "Jaket");
+	    config.BuildAll();
+    }
     private void Start()
     {
         // create output points for logs
@@ -63,7 +68,6 @@ public class Plugin : MonoBehaviour
     }
 
     private void OnApplicationQuit() => Log.Flush();
-
     private void Init()
     {
         if (Initialized) return;

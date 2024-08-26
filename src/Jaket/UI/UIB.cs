@@ -220,16 +220,10 @@ public class UIB
         var img = Image(team.ToString(), parent, r, team.UIColor());
 
         Text(team switch {
-            Team.Blue   => "V1",
-            Team.Fraud  => "F1",
-            Team.Red    => "V2",
             Team.Pink   => "UwU",
             Team.Purple => "UwU",
             _ => ""
         }, img.transform, r.Text, team switch {
-            Team.Blue   => yellow,
-            Team.Fraud  => yellow,
-            Team.Red    => yellow,
             Team.Pink   => Dark(pink),
             Team.Purple => Dark(team.Color()),
             _ => Color.white

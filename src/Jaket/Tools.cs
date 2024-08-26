@@ -28,7 +28,6 @@ public class Tools
     /// <summary> Account id of the local player. </summary>
     public static uint AccId;
     public static string[] CachedBlacklist;
-
     /// <summary> How could I know that Steamworks do not cache this value? </summary>
     public static void CacheAccId() => AccId = Id.AccountId;
     public static void CacheBlacklist() => CachedBlacklist = File.ReadAllLines(Plugin.UIDBlacklistPath);

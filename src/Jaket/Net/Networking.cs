@@ -51,7 +51,7 @@ public class Networking
 
         Events.OnLoadingStarted += () =>
         {
-            if (LobbyController.Online) SceneHelper.SetLoadingSubtext(UnityEngine.Random.value < .042f ? "DOCTOR SEX!!!" : "/// MULTIPLAYER VIA JAKET ///");
+            if (LobbyController.Online) SceneHelper.SetLoadingSubtext(UnityEngine.Random.value < .042f ? "kill yourself" : "/// MULTIPLAYER VIA JAKET ///");
             Loading = true;
         };
         Events.OnLoaded += () =>
@@ -86,8 +86,8 @@ public class Networking
             if (!LobbyController.IsOwner) return;
 
             void Msg(string s) => LobbyController.Lobby?.SendChatString(s); 
-            Msg("<color=yellow>This server is hosted on glitch's custom jaket fork</color>");
-            Msg("<color=yellow>report all issues to https://discord.gg/RMenybbnpQ and not to the normal jaket developers</color>");
+            Msg("<color=blue>This server is hosted on a custom jaket fork</color>");
+            Msg("<color=red>report all issues to https://discord.gg/RMenybbnpQ and not to the normal jaket developers</color>");
         };
 
         SteamMatchmaking.OnLobbyMemberLeave += (lobby, member) =>

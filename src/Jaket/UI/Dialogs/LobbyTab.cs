@@ -7,6 +7,7 @@ using Jaket.Assets;
 using Jaket.Net;
 using Jaket.World;
 
+using static Pal;
 using static Rect;
 
 /// <summary> Tab responsible for lobby management. </summary>
@@ -20,13 +21,13 @@ public class LobbyTab : CanvasSingleton<LobbyTab>
     private int lobbyAccessLevel;
     /// <summary> Checkboxes with lobby settings. </summary>
     private Toggle pvp, cheats, mods, bosses;
-
+	
     private void Start()
     {
         Events.OnLobbyAction += Rebuild;
 
         UIB.Shadow(transform);
-        UIB.Table("Lobby Control", "#lobby-tab.lobby", transform, Tlw(16f + 144f / 2f, 144f), table =>
+        UIB.Table("Lobby Control", "#lobby-tab.lobby", transform, Tlw(16f + 192f / 2f, 192f), table =>
         {
             create = UIB.Button("#lobby-tab.create", table, Btn(68f), clicked: () =>
             {
@@ -39,18 +40,18 @@ public class LobbyTab : CanvasSingleton<LobbyTab>
 
                 Rebuild();
             });
-            invite = UIB.Button("#lobby-tab.invite", table, Btn(116f), clicked: LobbyController.InviteFriend);
+            invite = UIB.Button("#lobby-tab.invite", table, Btn(116f), clicked: LobbyController.InviteFriend);					  			
         });
-        UIB.Table("Lobby Codes", "#lobby-tab.codes", transform, Tlw(176f + 192f / 2f, 192f), table =>
+        UIB.Table("Lobby Codes", "#lobby-tab.codes", transform, Tlw(224f + 192f / 2f, 192f), table =>
         {
             copy = UIB.Button("#lobby-tab.copy", table, Btn(68f), clicked: LobbyController.CopyCode);
             UIB.Button("#lobby-tab.join", table, Btn(116f), clicked: LobbyController.JoinByCode);
             UIB.Button("#lobby-tab.list", table, Btn(164f), clicked: LobbyList.Instance.Toggle);
         });
-        UIB.Table("Lobby Config", "#lobby-tab.config", transform, Tlw(384f + 422f / 2f, 422f), table =>
+        UIB.Table("Lobby Config", "#lobby-tab.config", transform, Tlw(432f + 422f / 2f, 422f), table =>
         {
             field = UIB.Field("#lobby-tab.name", table, Tgl(64f), cons: name => LobbyController.Lobby?.SetData("name", name));
-            field.characterLimit = 256;
+            field.characterLimit = 28;
 
             accessibility = UIB.Button("#lobby-tab.private", table, Btn(108f), clicked: () =>
             {
@@ -80,7 +81,6 @@ public class LobbyTab : CanvasSingleton<LobbyTab>
 
             bosses = UIB.Toggle("#lobby-tab.heal-bosses", table, Tgl(398f), 20, allow => LobbyController.Lobby?.SetData("heal-bosses", allow.ToString()));
         });
-
         Version.Label(transform);
         Rebuild();
     }
@@ -95,7 +95,7 @@ public class LobbyTab : CanvasSingleton<LobbyTab>
 
         if (Shown && transform.childCount > 0) Rebuild();
     }
-
+	    
     /// <summary> Rebuilds the lobby tab to update control buttons. </summary>
     public void Rebuild()
     {
@@ -105,7 +105,7 @@ public class LobbyTab : CanvasSingleton<LobbyTab>
             lobbyAccessLevel = 0;
             pvp.isOn = true;
             cheats.isOn = false;
-            mods.isOn = true;
+            mods.isOn = false;
             bosses.isOn = true;
         }
         else field.text = LobbyController.Lobby?.GetData("name");
