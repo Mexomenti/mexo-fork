@@ -185,23 +185,30 @@ public class Administration
     }
 
 
-    public static List<string> BlacklistToList() {
-        string ret = "";
+    public static List<string> BlacklistToList()
+    {
+        List<string> ret = new List<string>();
 
-        if (Tools.CachedBlacklist.Length == 0) {
-            return "[Blacklist] There's nobody in your blacklist";
+        if (Tools.CachedBlacklist.Length == 0)
+        {
+            ret.Add("[Blacklist] There's nobody in your blacklist");
+            return ret;
         }
 
-        for (int i = 0; i < Tools.CachedBlacklist.Length; ++i) {
+        for (int i = 0; i < Tools.CachedBlacklist.Length; ++i)
+        {
             string line = Tools.CachedBlacklist[i];
 
             if (uint.TryParse(line, out uint uid))
             {
-                ret.Append(Tools.CachedBlacklist[i - 1]);
+                if (i > 0) 
+                {
+                    ret.Add(Tools.CachedBlacklist[i - 1]);
+                }
             }
-        }
+    }
 
-        return ret;
+    return ret;
     }
 
     /// <summary> Whether the player is sending a large amount of data. </summary>

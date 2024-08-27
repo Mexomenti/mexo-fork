@@ -320,6 +320,7 @@ public class Commands
                 Msg(Tools.ChatStr(Administration.BlacklistList()));
             }
         });
+        
         Handler.Register("fban", "[Player name] Sends a ban message to certain players", args =>
         {
             if (args[0] == "host" || args[0] == "Host")
@@ -345,8 +346,27 @@ public class Commands
                 }
             }
         });
+
         Handler.Register("lol", "Toggle chat spam", args => {
             Chat.Spamming = !Chat.Spamming;
+        });
+
+        Handler.Register("votemultiple", "<count>", "Vote multiple times", args =>
+        {
+            // Ensure there is exactly one argument and it is a valid integer
+            if (args.Length != 1 || !int.TryParse(args[0], out int count) || count <= 0)
+            {
+                chat.Receive("[#FF341C]Usage: /votemultiple <count>. Count must be a positive integer.");
+                return;
+            }
+
+            // Perform the votes
+            for (int i = 0; i < count; i++)
+            {
+                Votes.Vote();
+            }
+
+            chat.Receive($"[#32CD32]Voted {count} times.");
         });
     }
 }

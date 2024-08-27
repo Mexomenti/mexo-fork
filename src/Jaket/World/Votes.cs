@@ -38,6 +38,7 @@ public class Votes
     /// <summary> Votes for the given option. </summary>
     public static void Vote(byte option = 0) => Networking.Send(PacketType.Vote, w =>
     {
+        Debug.Log($"Voting with option: {option}");
         w.Id(Tools.AccId);
         w.Byte(option);
     });
